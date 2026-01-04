@@ -2,96 +2,19 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Talk2BIM – IFC Demo</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-    #viewer {
-      width: 100%;
-      height: 100%;
-      background: #1e1e1e;
-    }
-    #loading {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 8px 12px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      z-index: 10;
-      border-radius: 4px;
-    }
-  </style>
+  <title>Talk2BIM</title>
+  <link rel="stylesheet" href="style.css" />
 
-<script src="https://unpkg.com/@xeokit/xeokit-sdk/dist/xeokit-sdk.umd.js"></script>
-
-  <script>
-  console.log("xeokit:", typeof xeokit);
-</script>
-
-
-  <!-- JSZip (zum Entpacken der ZIP) -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <!-- xeokit (ES Module, stabil) -->
+  <script type="module" src="app.js"></script>
 </head>
 
 <body>
-  <div id="loading">Lade IFC-Modell…</div>
   <canvas id="viewer"></canvas>
 
-  <script>
-    const viewer = new xeokit.Viewer({
-      canvasId: "viewer",
-      transparent: true
-    });
-
-    viewer.camera.eye = [10, 10, 10];
-    viewer.camera.look = [0, 0, 0];
-    viewer.camera.up = [0, 0, 1];
-
-    async function loadIFCFromZip(zipUrl) {
-      const response = await fetch(zipUrl);
-      const blob = await response.blob();
-
-      const zip = await JSZip.loadAsync(blob);
-
-      let ifcFileName = null;
-      zip.forEach((path, file) => {
-        if (path.toLowerCase().endsWith(".ifc")) {
-          ifcFileName = path;
-        }
-      });
-
-      if (!ifcFileName) {
-        alert("Keine IFC-Datei in der ZIP gefunden.");
-        return;
-      }
-
-      const ifcData = await zip.file(ifcFileName).async("arraybuffer");
-
-  const loader = new xeokit.IFCLoaderPlugin(viewer, {
-  wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.57/"
-});
-
-
-      loader.load({
-        id: "ifcModel",
-        data: ifcData,
-        edges: true
-      });
-
-      document.getElementById("loading").innerText = "Modell geladen";
-      setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-      }, 1500);
-    }
-
-    loadIFCFromZip("models/GEIT-Laborraeume.zip");
-  </script>
+  <div id="chat">
+    <div id="chat-log"></div>
+    <input id="chat-input" placeholder="Frag etwas zum Modell…" />
+  </div>
 </body>
 </html>
-
