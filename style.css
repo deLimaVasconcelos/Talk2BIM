@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+#viewer {
+  width: 100%;
+  height: 100%;
+}
+
+#chat {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  width: 320px;
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+  border-radius: 8px;
+}
+
+#chat-log {
+  height: 200px;
+  padding: 8px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+#chat-input {
+  width: 100%;
+  border: none;
+  padding: 8px;
+  outline: none;
+}
