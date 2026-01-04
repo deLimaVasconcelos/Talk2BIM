@@ -69,7 +69,10 @@
 
       const ifcData = await zip.file(ifcFileName).async("arraybuffer");
 
-      const loader = new xeokit.IFCLoaderPlugin(viewer);
+  const loader = new xeokit.IFCLoaderPlugin(viewer, {
+  wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.57/"
+});
+
 
       loader.load({
         id: "ifcModel",
